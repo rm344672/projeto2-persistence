@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projeto2_persistence/sqlite/models/person.dart';
 
 class AddPerson extends StatelessWidget {
   AddPerson({Key? key}) : super(key: key);
@@ -64,7 +65,14 @@ class AddPerson extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 16),
                 child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        Person person = Person(
+                          firstName: _nameController.text,
+                          lastName: _lastNameController.text,
+                          address: _addressController.text
+                        );
+                        Navigator.pop(context, person);
+                      }
                     },
                     child: const Text("Gravar")),
               )

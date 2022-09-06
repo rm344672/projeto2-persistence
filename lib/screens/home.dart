@@ -23,7 +23,17 @@ class homeWidget extends StatelessWidget {
               Navigator.pushNamed(context, "/sqlite");
             },
           ),
-          divisorListMain()
+          divisorListMain(),
+           ListTile(
+            leading: buildSvgIcon("images/db.svg"),
+            title: const Text("Floot"),
+            subtitle: const Text("Lisa de livros"),
+            trailing: const Icon(Icons.navigate_next),
+            onTap: (){
+              Navigator.pushNamed(context, "/floor");
+            },
+          ),
+          divisorListMain(),
         ]
       ),
     );
