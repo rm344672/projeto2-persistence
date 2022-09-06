@@ -27,10 +27,20 @@ class homeWidget extends StatelessWidget {
            ListTile(
             leading: buildSvgIcon("images/db.svg"),
             title: const Text("Floot"),
-            subtitle: const Text("Lisa de livros"),
+            subtitle: const Text("Lista de livros"),
             trailing: const Icon(Icons.navigate_next),
             onTap: (){
               Navigator.pushNamed(context, "/floor");
+            },
+          ),
+          divisorListMain(),
+          ListTile(
+            leading: buildSvgIcon("images/firebase.svg"),
+            title: const Text("Firebase Cloud"),
+            subtitle: const Text("Lisa de Carros"),
+            trailing: const Icon(Icons.navigate_next),
+            onTap: (){
+              Navigator.pushNamed(context, "/firebase");
             },
           ),
           divisorListMain(),

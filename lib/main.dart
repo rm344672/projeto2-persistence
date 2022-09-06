@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projeto2_persistence/firebase/list.dart';
 import 'package:flutter_projeto2_persistence/floor/list.dart';
 import 'package:flutter_projeto2_persistence/screens/home.dart';
 import 'package:flutter_projeto2_persistence/sqlite/list.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       routes: {
         "/": (context) => const homeWidget(),
         "/sqlite": (context) => const ListSQLiteWidget(),
-        "/floor": (context) => const ListFloorWidget()
+        "/floor": (context) => const ListFloorWidget(),
+        "/firebase": (context) => const ListCarFirestoreWidget()
       },
     );
   }
