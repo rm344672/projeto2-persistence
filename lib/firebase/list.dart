@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projeto2_persistence/firebase/add.dart';
 import 'package:flutter_projeto2_persistence/firebase/models/car.dart';
@@ -17,22 +18,8 @@ class ListCarFirestoreWidget extends StatefulWidget {
 class _ListCarFirestoreWidgetState extends State<ListCarFirestoreWidget> {
   List<Car> cars = [];
 
-  @override
-  void initState() {
-    super.initState();
-    getAll();
-  }
-
-  getAll() async {
-   
-  }
-
-  insert(Person person) async {
-   
-  }
-
-  delete(int index) async {
-   
+  insert(Car car) async {
+    FirebaseFirestore.instance.collection("cars").add(car.toJson());
   }
 
   @override
@@ -54,15 +41,32 @@ class _ListCarFirestoreWidgetState extends State<ListCarFirestoreWidget> {
               icon: Icon(Icons.add))
         ],
       ),
-      body: ListView.separated(
-          itemBuilder: (context, index) => buildListItem(index),
-          separatorBuilder: (context, index) => const Divider(height: 1),
-          itemCount: cars.length),
+      body: buildList(context),
     );
   }
 
-  Widget buildListItem(int index) {
-    Car p = cars[index];
+  Widget buildList(BuildContext context){
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection("cars").snapshots(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData) return const LinearProgressIndicator();
+        if(snapshot.data == null){
+          return Container(child: const Text("Nenhum carro encontrado"));
+        }else{
+          return buildListSeparated(context, snapshot.data!.docs);
+        }
+      });
+  }
+
+  Widget buildListSeparated(BuildContext context, List<QueryDocumentSnapshot> snapshot){
+    return ListView(
+      padding: const EdgeInsets.only(top: 30),
+      children: snapshot.map((data) => buildListItem(context, data)).toList()
+    );
+  }
+
+  Widget buildListItem(BuildContext context, QueryDocumentSnapshot data) {
+    Car c = Car.fromSnapshot(data);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Container(
@@ -70,10 +74,10 @@ class _ListCarFirestoreWidgetState extends State<ListCarFirestoreWidget> {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(5)),
           child: ListTile(
-              title: Text(p.name),
-              subtitle: Text(p.brand),
+              title: Text(c.name),
+              subtitle: Text(c.brand),
               onLongPress: () {
-                delete(index);
+                data.reference.delete();
               }),
         ));
   }
